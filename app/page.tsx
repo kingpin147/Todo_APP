@@ -14,7 +14,30 @@ export default function Home() {
  const [id , setId]:any = useState("");
 //functions
 const addItem  = ()=>{
+  let obj:any = todos.find(item=>item.id==id);
+  if(obj){
+    let newArray = todos.filter(item=> item.id !== obj.id)
+
+    setTodos([...newArray,{movie:inputVal, id:id}])
+    setInput("")
+    setId(0)
+    return
+  }
+
   setTodos([...todos,{movie:inputVal, id:id}])
+  setInput("")
+  setId(0)
+};
+const editItems=(id:any)=>{
+  let obj:any = todos.find(item=>item.id==id);
+  setInput(obj.movie);
+  setId(obj.id);
+console.log(obj);
+};
+const delItem = (id:any) => {
+  let newArray = todos.filter(item=> item.id !== id)
+
+  setTodos([...newArray])
 }
   return (
     // title
@@ -53,14 +76,15 @@ const addItem  = ()=>{
                 <span className="cursor-pointer shadow rounded-full h-8 w-8 text-center my-auto">
                   {index+1}
                 </span>
-                <span className="cursor-pointer shadow rounded-full h-8 w-8 text-center my-auto text-red-700">
+                <span onClick={()=>delItem(item.id)}  className="cursor-pointer shadow rounded-full h-8 w-8 text-center my-auto text-red-700">
                   X
                 </span>
               </div>
               <div className="mt-5 text-[30px] text-gray-700">{item.movie}</div>
               {/* data div */}
               <div>
-                <h2 className="text-right cursor-pointer">Edit</h2>
+                <h2 onClick={()=>editItems(item.id)} className="text-right cursor-pointer">Edit</h2>
+                {/* <h2 className="text-green-600">id:{item.id}</h2> */}
               </div>
             </div>
           );
